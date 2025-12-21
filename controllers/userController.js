@@ -1,12 +1,14 @@
 
 const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
+const connectDB = require('../config/db');
 const bcrypt = require("bcrypt");
 require("dotenv").config();
 const saltRounds = 10;
 
 const getUsers = async (req, res) => {
     try {
+        await connectDB();
         const users = await User.find();
         res.status(200).json(users);
     } catch (err) {
@@ -20,6 +22,7 @@ const createToken = (user) => {
 
 const login = async (req, res) => {
     try {
+        await connectDB();
         const { loginEmail, loginPassword, role } = req.body;
         const user = await User.findOne({ email: loginEmail });
         if (!user) return res.send({ status: 404, message: 'User not found' });
@@ -38,7 +41,8 @@ const login = async (req, res) => {
     }
 }
 
-const signup = (req, res) => {
+const signup = async (req, res) => {
+    await connectDB();
     const { name, email, password, role } = req.body;
     bcrypt.genSalt(saltRounds, function (err, salt) {
         bcrypt.hash(password, salt, async function (err, hash) {
