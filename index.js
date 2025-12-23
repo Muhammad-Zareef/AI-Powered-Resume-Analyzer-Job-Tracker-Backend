@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
-    origin: 'https://ai-powered-resume-analyzer-job-trac-delta.vercel.app',
+    origin: "*",
     credentials: true,
 }));
 
