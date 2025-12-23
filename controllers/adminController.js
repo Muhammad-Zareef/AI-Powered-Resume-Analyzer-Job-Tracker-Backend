@@ -98,7 +98,6 @@ const filterResumes = async (req, res) => {
         end.setHours(23, 59, 59, 999);
         query.createdAt = { $gte: start, $lte: end };
     }
-    console.log(JSON.stringify(query, null, 2));
     try {
         const resumes = await Resume.find(query).sort({ createdAt: -1 });
         res.json({ success: true, resumes });
@@ -214,9 +213,7 @@ const addUser = async (req, res) => {
     const { name, email, password, role } = req.body;
     bcrypt.genSalt(saltRounds, function (err, salt) {
         bcrypt.hash(password, salt, async function (err, hash) {
-            if (err) {
-                return console.log(err);
-            }
+            if (err) return console.log(err);
             try {
                 const newUser = new User({ name, email, password: hash, role });
                 await newUser.save();

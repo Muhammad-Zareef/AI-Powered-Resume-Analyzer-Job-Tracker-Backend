@@ -54,7 +54,6 @@ const analyzeResume = async (req, res) => {
         // PDF flow
         const pdfBuffer = req.files.resume.data;
         const resumeText = await extractTextFromBuffer(pdfBuffer);
-        console.log(resumeText);
         const prompt = `
             You are a resume–job matching and analysis engine.
             You will be given:
@@ -99,14 +98,11 @@ const analyzeResume = async (req, res) => {
                 }
             }
         `;
-        console.log(prompt);
         const response = await ai.models.generateContent({
             model: "gemini-2.5-flash",
             contents: prompt,
         });
-        console.log(response.text);
         const aiData = safeJsonParse(response.text);
-        console.log(aiData);
         const newResume = new Resume({
             userId: user.id,
             userName: user.name,
@@ -119,7 +115,6 @@ const analyzeResume = async (req, res) => {
             missingSkills: aiData.missingSkills,
             suggestions: aiData.suggestions
         });
-        console.log(newResume.aiImprovedText);
         await newResume.save();
         res.status(200).send({ status: 200, newResume, message: "Response generated successfully" });
     } catch (err) {
@@ -129,17 +124,14 @@ const analyzeResume = async (req, res) => {
 
 const downloadResume = async (req, res) => {
     const { content } = req.body;
-
     if (!content || !content.trim()) {
         return res.status(400).json({ message: "No content provided" });
     }
-
     res.setHeader(
         "Content-Disposition",
         "attachment; filename=professional-summary.txt"
     );
     res.setHeader("Content-Type", "text/plain");
-
     res.send(content);
 }
 

@@ -18,12 +18,18 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
-    origin: "https://ai-powered-resume-analyzer-job-trac-delta.vercel.app",
+    origin: 'https://ai-powered-resume-analyzer-job-trac-delta.vercel.app',
     credentials: true,
 }));
 
-// connect to database
-connectDB();
+(async function () {
+    try {
+        await connectDB();
+        console.log("DB connected successfully");
+    } catch (error) {
+        console.error("DB connection failed:", error);
+    }
+})();
 
 app.use('/api', userRoutes);
 app.use('/admin', adminRoutes);
