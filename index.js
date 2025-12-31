@@ -14,7 +14,7 @@ require("dotenv").config();
 const PORT = process.env.PORT || 3000;
 
 app.use(cors({
-    origin: "*",
+    origin: 'https://ai-powered-resume-analyzer-job-trac-delta.vercel.app',
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"]
 }));
