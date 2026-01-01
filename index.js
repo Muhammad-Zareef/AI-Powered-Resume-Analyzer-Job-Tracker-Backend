@@ -11,8 +11,6 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 require("dotenv").config();
 
-const PORT = process.env.PORT || 3000;
-
 app.use(cors({
     origin: 'https://ai-powered-resume-analyzer-job-trac-delta.vercel.app',
     credentials: true,
@@ -42,6 +40,4 @@ app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 
-app.listen(PORT, () => {
-    console.log("Server running");
-});
+module.exports = app;
