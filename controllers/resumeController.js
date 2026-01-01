@@ -24,6 +24,16 @@ const getResumes = async (req, res) => {
     }
 }
 
+const getResumeById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const resume = await Resume.findById(id);
+        res.status(200).json({ message: "Successfully!", resume });
+    } catch (err) {
+        res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+}
+
 pdfjsLib.GlobalWorkerOptions.workerSrc = path.join(__dirname, "../node_modules/pdfjs-dist/legacy/build/pdf.worker.js");
 
 async function extractTextFromBuffer(buffer) {
@@ -155,4 +165,4 @@ const clearAllHistory = async (req, res) => {
     }
 }
 
-module.exports = { getResumes, analyzeResume, downloadResume, deleteResume, clearAllHistory, auth };
+module.exports = { getResumes, getResumeById, analyzeResume, downloadResume, deleteResume, clearAllHistory, auth };
